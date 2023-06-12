@@ -27,7 +27,7 @@ CREATE TABLE `landlord_user` (
   `building_id` int NOT NULL,
   `username` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
-  `ticket_type` int NOT NULL,
+  `ticket_type` varchar(45) NOT NULL,
   PRIMARY KEY (`landlord_user_id`),
   UNIQUE KEY `username` (`username`),
   KEY `building_id` (`building_id`),
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-11 16:14:19
+-- Dump completed on 2023-06-12 22:56:21
