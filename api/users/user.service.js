@@ -82,4 +82,19 @@ module.exports = {
       }
     );
   },
+  getUserByUserEmail: (email, callBack) => {
+    pool.query(
+      `select * from registration where email =?`, //Question, how do i make the emails unique?
+      [email],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        } else {
+          callBack(null, results[0]);
+          /**we need to specify results[0] because in login we use results.password to access the pw.
+           *If its an array with multiple entry, we cant do that */
+        }
+      }
+    );
+  },
 };

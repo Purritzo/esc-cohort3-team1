@@ -4,8 +4,12 @@ const {
   getUsers,
   updateUser,
   deleteUser,
+  getUserByUserEmail,
 } = require("./user.service.js");
-const { genSaltSync, hashSync } = require("bcrypt");
+const { genSaltSync, hashSync, compareSync } = require("bcrypt");
+//Create Json web token
+const { sign } = require("jsonwebtoken");
+
 module.exports = {
   createUser: (req, res) => {
     const body = req.body;
@@ -101,6 +105,44 @@ module.exports = {
         return res.json({
           sucess: "1",
           message: "Deleted successfully",
+        });
+      }
+    });
+  },
+
+  //LOGIN CONTROLLER
+  login: (req, res) => {
+    const body = req.body; //user will pass email and password
+    getUserByUserEmail(body.email, (err, results) => {
+      if (err) {
+        console.log(err);
+      }
+      if (!results) {
+        return res.json({
+          success: 0,
+          data: "Invalid email or password ",
+        });
+      }
+      const password_check = compareSync(body.password, results.password); //this is boolean variable
+      if (password_check) {
+        results.password = undefined; //Because I dont want to pass the password to the webtoken
+        /**sign takes in 3 parameters
+         * First, the object which we want to create jsonwebtoken
+         * Second, is the secret key (should put this in .env)
+         * Third, supplementatry information
+         */
+        const jsontoken = sign({ result: results }, "qwe1234", {
+          expiresIn: "1h",
+        });
+        return res.json({
+          success: 1,
+          message: "Login successfully",
+          token: jsontoken,
+        });
+      } else {
+        res.json({
+          success: 0,
+          data: "Invalid email or password",
         });
       }
     });
