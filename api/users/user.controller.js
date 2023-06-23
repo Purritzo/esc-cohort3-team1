@@ -114,6 +114,7 @@ module.exports = {
   login: (req, res) => {
     const body = req.body; //user will pass email and password
     getUserByUserEmail(body.email, (err, results) => {
+      //results is one row of entry
       if (err) {
         console.log(err);
       }
@@ -123,11 +124,15 @@ module.exports = {
           data: "Invalid email or password ",
         });
       }
+
+      // Email is found via getUserByUserEmail. I check if passwork matches
       const password_check = compareSync(body.password, results.password); //this is boolean variable
       if (password_check) {
         results.password = undefined; //Because I dont want to pass the password to the webtoken
         /**sign takes in 3 parameters
-         * First, the object which we want to create jsonwebtoken
+         * First, the object which we want to create jsonwebtoken. Object in Javascript are in key-value pairs
+         *    Results is obtained from getUserByUserEmail in user.service.js.
+         *    Example - result: {"firstName":"Carina", "lastName": "Chu", "gender": "f", "email": "test@gmail.com", "password":"somehash"}
          * Second, is the secret key (should put this in .env)
          * Third, supplementatry information
          */
@@ -139,6 +144,8 @@ module.exports = {
           message: "Login successfully",
           token: jsontoken,
         });
+
+        // Password doesn't match:
       } else {
         res.json({
           success: 0,
