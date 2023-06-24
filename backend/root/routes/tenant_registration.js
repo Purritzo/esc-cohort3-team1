@@ -1,4 +1,7 @@
 /*
+================================================================
+THIS IS A DRAFT CODE -- NOT USED, JUST FOR REFERENCE
+================================================================
 REGISTRATION
 Route: /register_tenant
 Require: unit_id[not implemented yet], username, password, lease_id[not implemented yet]
@@ -19,7 +22,7 @@ DELETE USER
 Route: /delete_tenant
 Require: tenant_user_id
 */
-
+/*
 const express = require('express');
 const app = express();
 const mysql = require('mysql2');
@@ -39,16 +42,16 @@ const db = mysql.createConnection({
 db.connect(function(err) {
     if (err) throw err;
     console.log('Database is connected successfully !');
-});
+});*/
 
 // REGISTRATION
-app.post('/register_tenant' , (req, res) => {
+//app.post('/register_tenant' , (req, res) => {
 
     /*
     TODO:
     need building name, postal code to get the building id, then using building id, floor and unit number to get unit id then from unit id, username, password, lease id create tenant user
     */
-
+/*
     const username = req.body.username;
     const password = req.body.password;
 
@@ -136,4 +139,4 @@ app.delete('/delete_tenant', (req,res) => {
 
 app.listen(3307, () => {
     console.log("server is running on port 3307")
-})
+})*/

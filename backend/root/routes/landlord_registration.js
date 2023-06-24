@@ -1,4 +1,7 @@
 /*
+================================================================
+THIS IS A DRAFT CODE -- NOT USED, JUST FOR REFERENCE
+================================================================
 REGISTRATION
 Route: /register_landlord
 Require: building_name[not implemented yet], username, password, ticket_type
@@ -40,6 +43,10 @@ db.connect(function(err) {
     if (err) throw err;
     console.log('Database is connected successfully !');
 });
+
+// database tables required
+const landlord_user = require("../sql/landlord_user.sql")
+const building = require("../sql/building.sql")
 
 // REGISTRATION
 app.post('/register_landlord' , (req, res) => {
