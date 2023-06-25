@@ -5,9 +5,9 @@ import {
   controllerUpdateUser,
   controllerDeleteUser,
   controllerLogin,
-} from "./user.controller.js";
+} from "../controller/user_controller.js";
 import express from "express";
-import { checkToken } from "../../auth/token_validation.js";
+import { checkToken } from "../auth/token_validation.js";
 
 const router = express.Router();
 

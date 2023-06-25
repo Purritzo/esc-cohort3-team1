@@ -5,7 +5,7 @@ import {
   updateUser,
   deleteUser,
   getUserByUserEmail,
-} from "./user.service.js";
+} from "../services/user_service.js";
 import { genSaltSync, hashSync, compareSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 
