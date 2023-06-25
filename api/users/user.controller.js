@@ -1,5 +1,5 @@
 import {
-  create,
+  createLandlord,
   getUserByUserId,
   getUsers,
   updateUser,
@@ -9,12 +9,12 @@ import {
 import { genSaltSync, hashSync, compareSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export const controllerCreateUser = (req, res) => {
+export const controllerCreateLandlord = (req, res) => {
   const body = req.body;
   console.log(body);
   const salt = genSaltSync(10);
   body.password = hashSync(body.password, salt);
-  create(body, (err, results) => {
+  createLandlord(body, (err, results) => {
     if (err) {
       console.log(err);
       return res.status(500).json({

@@ -1,18 +1,17 @@
 import pool from "../../config/database.js";
 
-export const create = (data, callBack) => {
+export const createLandlord = (data, callBack) => {
   pool.query(
     `
-    INSERT INTO registration(firstName, lastName, gender, email, password, number)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO LANDLORD_USER(landlord_user_id, building_id, username, password, ticket_type)
+    VALUES (?, ?, ?, ?, ?)
     `,
     [
-      data.first_name,
-      data.last_name,
-      data.gender,
-      data.email,
+      data.landlord_user_id,
+      data.building_id,
+      data.username,
       data.password,
-      data.number,
+      data.ticket_type,
     ],
     (error, results, fields) => {
       if (error) {

@@ -4,7 +4,7 @@ const pool = createPool({
   host: "localhost",
   user: "root",
   password: "", //INSERT HERE
-  database: "api_test",
+  database: "landlord_tenant_portal",
   connectionLimit: 10,
 });
 

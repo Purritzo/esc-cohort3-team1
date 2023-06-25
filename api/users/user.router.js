@@ -1,5 +1,5 @@
 import {
-  controllerCreateUser,
+  controllerCreateLandlord,
   controllerGetUsers,
   controllerGetUserByUserId,
   controllerUpdateUser,
@@ -11,8 +11,8 @@ import { checkToken } from "../../auth/token_validation.js";
 
 const router = express.Router();
 
-router.post("/", checkToken, controllerCreateUser);
-router.get("/", checkToken, controllerGetUsers);
+router.post("/", controllerCreateLandlord);
+router.get("/", controllerGetUsers);
 router.get("/:id", checkToken, controllerGetUserByUserId);
 router.patch("/", checkToken, controllerUpdateUser);
 router.delete("/", checkToken, controllerDeleteUser);
