@@ -39,3 +39,25 @@ export const getLandlordByUsername = (username, callBack) => {
     }
   );
 };
+
+export const createTenant = (data, callBack) => {
+  pool.query(
+    `
+    INSERT INTO TENANT_USER(tenant_user_id, unit_id, username, password, lease_id)
+    VALUES (?, ?, ?, ?, ?)
+    `,
+    [
+      data.tenant_user_id,
+      data.unit_id,
+      data.username,
+      data.password,
+      data.lease_id,
+    ],
+    (error, results, fields) => {
+      if (error) {
+        callBack(error);
+      }
+      callBack(null, results);
+    }
+  );
+};

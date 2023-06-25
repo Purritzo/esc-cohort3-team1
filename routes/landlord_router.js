@@ -1,8 +1,8 @@
 import {
   controllerCreateLandlord,
   controllerLoginLandlord,
-  /** , 
   controllerCreateTenant,
+  /**
   controllerReadTenant,
   controllerUpdateTenant,
   controllerDeleteTenant,
@@ -23,5 +23,5 @@ const router = express.Router();
  */
 router.post("/create", controllerCreateLandlord);
 router.post("/login", controllerLoginLandlord);
-
+// router.post("/createTenant", checkToken, controllerCreateTenant); not working yet
 export default router;
