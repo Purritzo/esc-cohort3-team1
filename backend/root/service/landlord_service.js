@@ -9,11 +9,13 @@ const pool = require("../database.js");
 module.exports = {
 
     // register new landlord user
-    create: (data, callBack) => {
+    createLandlord: (data, callBack) => {
+
         pool.query(
         `INSERT INTO landlord_user (building_id, username, password, ticket_type) 
-                            VALUES (1,?,?,?)`,
+                            VALUES (?,?,?,?)`,
         [
+            data.building_id,
             data.username,
             data.password1,
             data.ticket_type
@@ -27,7 +29,7 @@ module.exports = {
     },
 
     // get all landlord users' username and ticket_type
-    getUsers: callBack => {
+    getLandlords: callBack => {
         pool.query(
             `SELECT landlord_user_id,username,ticket_type 
             FROM landlord_user`,
@@ -42,7 +44,7 @@ module.exports = {
     },
 
     // get specific landlord user's username and ticket_type
-    getUserByUserID: (id, callBack) => {
+    getLandlordByLandlordID: (id, callBack) => {
         pool.query(
             `SELECT landlord_user_id,username,ticket_type 
             FROM landlord_user 
@@ -58,7 +60,7 @@ module.exports = {
     },
 
     // update landlord user account
-    updateUser: (data, callBack) => {
+    updateLandlord: (data, callBack) => {
         pool.query(
         `UPDATE landlord_user 
         SET building_id=2, username=?, password=?, ticket_type=?
@@ -78,7 +80,7 @@ module.exports = {
     },
 
     // delete landlord user
-    deleteUser: (data, callBack) => {
+    deleteLandlord: (data, callBack) => {
         pool.query(
             `DELETE FROM landlord_user
             WHERE landlord_user_id = ?`,
@@ -92,7 +94,7 @@ module.exports = {
     },
 
     // get specific landlord user's username and ticket_type
-    getUserByUserUsername: (username, callBack) => {
+    getLandlordByLandlordUsername: (username, callBack) => {
         pool.query(
             `SELECT *
             FROM landlord_user 
