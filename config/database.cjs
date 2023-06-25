@@ -3,7 +3,7 @@ const pool = createPool({
   port: 3306,
   host: "localhost",
   user: "root",
-  password: "Swaggydog!22",
+  password: "", //INSERT HERE
   database: "api_test",
   connectionLimit: 10,
 });
