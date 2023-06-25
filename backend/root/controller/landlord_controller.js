@@ -3,32 +3,35 @@
 THIS FILE TAKES IN DATA FROM FRONTEND, PROCESS THE DATA IF NEEDED,
 AND PASS IT ON TO SERVICE WHICH DOES THE QUERY TO DATABASE.
 ================================================================
-createUser 
+createLandlord 
 Require: 
     username (username)
     password1 (first input of password)
     password2 (to check correct password)
     ticket_type (to indicate which service ticket landlord is in charge of)
+    building_name (to create/get building_id)
+    postal_code (postal code of building for creation/double checking)
+    building_id = "" (set to empty string)
 Returns json:
     {success: 0, message: "<error message>"} if error
     {success: 1, data: {"fieldCount": , "affectedRows": , "insertedID": , "info": , "serverStatus": , "warningStatus":} } if successful
 
-getUserByUserId 
+getLandlordByLandlordID 
 Require:
     landlord_user_id from params
-        e.g. http://localhost/3000/routes/1
+        e.g. http://localhost/3000/routes/landlord/1
 Returns json:
     {success: 0, message: "<error message>"} if error
     {success: 1, data: {"landlord_user_id": , "username": , "ticket_type": } } if successful
 
-getUsers 
+getLandlords 
 Require:
     does not require anything
 Returns json:
     {success: 0, message: "<error message>"} if error
     {success: 1, data: {[{"landlord_user_id": , "username": , "ticket_type": }, ... ] } if successful
 
-updateUser 
+updateLandlord 
 Require:
     landlord_user_id
     username (username)
@@ -38,7 +41,7 @@ Returns json:
     {success: 0, message: "<error message>"} if error
     {success: 0, data: "update successfully" }
 
-deleteUser 
+deleteLandlord 
 Require:
     landlord_user_id
 Returns json:
@@ -59,33 +62,50 @@ require("dotenv").config()
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 const { 
-    create, 
-    getUserByUserID, 
-    getUsers, 
-    updateUser,
-    deleteUser,
-    getUserByUserUsername
-} = require("./test_service");
+    createLandlord, 
+    getLandlordByLandlordID, 
+    getLandlords, 
+    updateLandlord,
+    deleteLandlord,
+    getLandlordByLandlordUsername
+} = require("../service/landlord_service");
+const {
+    createBuilding
+} = require("../service/building_service")
 
 module.exports = {
-    createUser: (req, res) => {
+    createLandlord: (req, res) => {
         const body = req.body;
         if (body.password1 == body.password2) {
-            const salt = genSaltSync(10);
-            body.password1 = hashSync(body.password1, salt);
-            create(body, (err, results) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).json({
-                        success: 0 ,
-                        message: "Database connection error"
-                    });
+
+            createBuilding(body, (err,results) => {
+                if (err === "Building exists") {
+                    console.log("building exists -- controller")
+                    console.log(results)
+                    body.building_id = results.building_id
+                } else if (!err) {
+                    console.log("building inserted -- controller")
+                    console.log(results)
+                    body.building_id = results.insertID
                 }
-                return res.status(200).json({
-                    success: 1,
-                    data: results
+
+                const salt = genSaltSync(10);
+                body.password1 = hashSync(body.password1, salt);
+                createLandlord(body, (err, results) => {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).json({
+                            success: 0 ,
+                            message: "Database connection error"
+                        });
+                    }
+                    return res.status(200).json({
+                        success: 1,
+                        data: results
+                    });
                 });
             });
+
         } else {
             return res.status(500).json({
                 success: 0,
@@ -94,9 +114,9 @@ module.exports = {
         }
     },
 
-    getUserByUserId: (req, res) => {
+    getLandlordByLandlordID: (req, res) => {
         const id = req.params.id;
-        getUserByUserID(id, (err, result) => {
+        getLandlordByLandlordID(id, (err, result) => {
             if (err) {
                 console.log(err);
                 return;
@@ -114,8 +134,8 @@ module.exports = {
         });
     },
 
-    getUsers: (req, res) => {
-        getUsers((err, results) => {
+    getLandlords: (req, res) => {
+        getLandlords((err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -133,11 +153,11 @@ module.exports = {
         })
     },
 
-    updateUser: (req, res) => {
+    updateLandlord: (req, res) => {
         const body = req.body;
         const salt = genSaltSync(10);
         body.password = hashSync(body.password, salt);
-        updateUser(body, (err, results) => {
+        updateLandlord(body, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
@@ -158,9 +178,9 @@ module.exports = {
         });
     },
 
-    deleteUser: (req,res) => {
+    deleteLandlord: (req,res) => {
         const data = req.body;
-        deleteUser(data, (err, results) => {
+        deleteLandlord(data, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -174,7 +194,7 @@ module.exports = {
 
     login: (req, res) => {
         const body = req.body;
-        getUserByUserUsername(body.username, (err, results) => {
+        getLandlordByLandlordUsername(body.username, (err, results) => {
             if (err) {
                 console.log(err);
             }
