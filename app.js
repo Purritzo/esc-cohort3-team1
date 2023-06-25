@@ -2,13 +2,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import router from "./routes/user_router.js";
+import landlordRouter from "./routes/landlord_router.js";
 
 const app = express();
 
 app.use(express.json());
 
-app.use("/api/users", router);
+app.use("/api/landlord", landlordRouter);
 
 app.get("/api", (req, res) => {
   res.json({
