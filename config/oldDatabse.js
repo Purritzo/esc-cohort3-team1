@@ -1,9 +1,9 @@
-const { createPool } = require("mysql2"); //this is just to import a method
+import { createPool } from "mysql2"; //this is just to import a method
 const pool = createPool({
   port: 3306,
   host: "localhost",
   user: "root",
-  password: "", //INSERT HERE
+  password: "",
   database: "api_test",
   connectionLimit: 10,
 });
@@ -28,7 +28,7 @@ pool.getConnection((err, connection) => {
   }
 });
 
-module.exports = pool; //this allow us to reuse the connect by keeping the connection in the pool
+export default pool; //this allow us to reuse the connect by keeping the connection in the pool
 /**
  * Functions of pool:
  * pool.query
