@@ -1,9 +1,10 @@
 // import dependencies here
-require("dotenv").config()
-const express = require('express');
+import dotenv from "dotenv"
+dotenv.config()
+import express from 'express';
 const app = express();
-const landlordRouter = require("./routes/landlord_router");
-const buildingRouter = require("./routes/building_router");
+import landlordRouter from "./routes/landlord_router.js";
+import buildingRouter from "./routes/building_router.js";
 
 app.use(express.json())
 
