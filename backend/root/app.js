@@ -11,6 +11,6 @@ app.use(express.json())
 app.use("/routes/landlord", landlordRouter);
 app.use("/routes/building", buildingRouter);
 
-app.listen(process.env.APPLICATION_PORT, () => {
-    console.log(`server running on port : ${process.env.APPLICATION_PORT}`)
+app.listen(process.env.APP_PORT, () => {
+    console.log(`server running on port : ${process.env.APP_PORT}`)
 });
