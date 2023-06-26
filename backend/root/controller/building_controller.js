@@ -6,7 +6,7 @@ AND PASS IT ON TO SERVICE WHICH DOES THE QUERY TO DATABASE.
 createBuilding 
 Require: 
     building_name
-    postal_cose
+    postal_code
 Returns json:
     {success: 0, message: "<error message>"} if error
     {success: 1, data: {"fieldCount": , "affectedRows": , "insertedID": , "info": , "serverStatus": , "warningStatus":} } if successful
@@ -42,110 +42,109 @@ Returns json:
     {success: 0, message: "<error message>"} if error
     {success: 1, message: "User has been deleted successfully" } if successful
 */
-const { 
+import { 
     createBuilding,
     getBuildings,
     getBuildingByBuildingID,
     updateBuilding,
     deleteBuilding
-} = require("../service/building_service");
+} from "../service/building_service.js";
 
-module.exports = {
-    createBuilding: (req, res) => {
-        const body = req.body;
-        createBuilding(body, (err, results) => {
-            if (err === "Building exists") {
-                return res.status(500).json({
-                    success: 0 ,
-                    message: "Building exists"
-                });
-            } else if (err) {
-                console.log(err);
-                return res.status(500).json({
-                    success: 0 ,
-                    message: "Database connection error"
-                });
-            } 
-            return res.status(200).json({
-                success: 1,
-                data: results
-                });
+
+export const createBuildingEntry = (req, res) => {
+    const body = req.body;
+    createBuilding(body, (err, results) => {
+        if (err === "Building exists") {
+            return res.status(500).json({
+                success: 0 ,
+                message: "Building exists"
             });
-    },
-
-    getBuildingByBuildingID: (req, res) => {
-        const id = req.params.id;
-        getBuildingByBuildingID(id, (err, result) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            if (!result) {
-                return res.json({
-                    success: 0,
-                    message: "Record not found"
-                });
-            }
-            return res.json({
-                success: 1,
-                data: result
+        } else if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0 ,
+                message: "Database connection error"
+            });
+        } 
+        return res.status(200).json({
+            success: 1,
+            data: results
             });
         });
-    },
+}
 
-    getBuildings: (req, res) => {
-        getBuildings((err, results) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            if (!results) {
-                return res.json({
-                    success: 0,
-                    message: "Record not found"
-                });
-            }
+export const getBuildingEntryByBuildingID = (req, res) => {
+    const id = req.params.id;
+    getBuildingByBuildingID(id, (err, result) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        if (!result) {
             return res.json({
-                success: 1,
-                data: results
-            })
+                success: 0,
+                message: "Record not found"
+            });
+        }
+        return res.json({
+            success: 1,
+            data: result
+        });
+    });
+}
+
+export const getBuildingEntries = (req, res) => {
+    getBuildings((err, results) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        if (!results) {
+            return res.json({
+                success: 0,
+                message: "Record not found"
+            });
+        }
+        return res.json({
+            success: 1,
+            data: results
         })
-    },
+    })
+}
 
-    updateBuilding: (req, res) => {
-        const body = req.body;
-        updateBuilding(body, (err, results) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).json({
-                    success: 0 ,
-                    message: "Database connection error"
-                });
-            }
-            if (!results) {
-                return res.json({
-                    success: 0,
-                    message: "Failed to update user"
-                })
-            }
-            return res.status(200).json({
-                success: 1,
-                data: "update successfully"
+export const updateBuildingEntry = (req, res) => {
+    const body = req.body;
+    updateBuilding(body, (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0 ,
+                message: "Database connection error"
             });
-        });
-    },
-
-    deleteBuilding: (req,res) => {
-        const data = req.body;
-        deleteBuilding(data, (err, results) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
+        }
+        if (!results) {
             return res.json({
-                success: 1,
-                message: "User has been deleted successfully"
-            });
+                success: 0,
+                message: "Failed to update user"
+            })
+        }
+        return res.status(200).json({
+            success: 1,
+            data: "update successfully"
         });
-    }
-};
+    });
+}
+
+export const deleteBuildingEntry = (req,res) => {
+    const data = req.body;
+    deleteBuilding(data, (err, results) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        return res.json({
+            success: 1,
+            message: "User has been deleted successfully"
+        });
+    });
+}

@@ -1,16 +1,17 @@
-const { 
-    createBuilding,
-    getBuildings,
-    getBuildingByBuildingID,
-    updateBuilding,
-    deleteBuilding
-} = require("../controller/building_controller");
-const router = require("express").Router();
+import { 
+    createBuildingEntry,
+    getBuildingEntries,
+    getBuildingEntryByBuildingID,
+    updateBuildingEntry,
+    deleteBuildingEntry
+}  from "../controller/building_controller.js";
+import express from "express";
+const router = express.Router();
 
-router.post("/", createBuilding);           // create building
-router.get("/", getBuildings);              // get all buildings
-router.get("/:id", getBuildingByBuildingID);    // get building user by id
-router.patch("/", updateBuilding);          // update building
-router.delete("/", deleteBuilding);         // delete building
+router.post("/", createBuildingEntry);           // create building
+router.get("/", getBuildingEntries);              // get all buildings
+router.get("/:id", getBuildingEntryByBuildingID);    // get building user by id
+router.patch("/", updateBuildingEntry);          // update building
+router.delete("/", deleteBuildingEntry);         // delete building
 
-module.exports = router;
+export default router;
