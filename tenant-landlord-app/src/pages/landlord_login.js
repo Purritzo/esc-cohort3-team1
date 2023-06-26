@@ -25,7 +25,7 @@ const LandlordLogin = () => {
         try{
             const response = await axios.post(
                 //api to be added
-                "",
+                "http://localhost:3000/login",
                 values
             )
         } catch (err){
