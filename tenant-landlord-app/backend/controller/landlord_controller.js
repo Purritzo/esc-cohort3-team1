@@ -4,6 +4,7 @@ import {
   getTickets,
   getTicketById,
   getTicketsByStatus,
+  updateQuotation,
 } from "../models/landlord_model.js";
 import { genSaltSync, hashSync, compareSync } from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -96,7 +97,6 @@ export const controllerGetTicketById = (req, res) => {
 
 export const controllerGetTicketsByStatus = (req, res) => {
   const status = req.params.status;
-  console.log(status);
   getTicketsByStatus(status, (err, results) => {
     if (err) {
       console.log(err);
@@ -113,5 +113,26 @@ export const controllerGetTicketsByStatus = (req, res) => {
         data: results,
       });
     }
+  });
+};
+
+export const controllerUpdateQuotation = (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+  updateQuotation(id, body, (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    if (!results) {
+      return res.json({
+        success: 0,
+        message: "Failed to update user",
+      });
+    }
+    return res.status(200).json({
+      success: 1,
+      data: "updated successfully!",
+    });
   });
 };

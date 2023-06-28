@@ -86,3 +86,22 @@ export const getTicketsByStatus = (status, callBack) => {
     }
   );
 };
+export const updateQuotation = (id, data, callBack) => {
+  const quotationAmount = parseFloat(data.quotation_amount).toFixed(2); //Note this is impt to format it to decimal
+  const status = "quotation sent";
+  pool.query(
+    `
+    UPDATE SERVICE_REQUEST
+    SET quotation_amount=?, status = ?
+    WHERE service_request_id = ?
+    `,
+    [quotationAmount, status, id],
+    (error, results, fields) => {
+      if (error) {
+        callBack(error);
+      } else {
+        callBack(null, results);
+      }
+    }
+  );
+};

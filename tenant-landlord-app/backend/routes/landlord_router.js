@@ -4,6 +4,7 @@ import {
   controllerGetTickets,
   controllerGetTicketById,
   controllerGetTicketsByStatus,
+  controllerUpdateQuotation,
 } from "../controller/landlord_controller.js";
 import express from "express";
 import { checkToken } from "../auth/token_validation.js";
@@ -27,5 +28,6 @@ router.get(
   checkToken,
   controllerGetTicketsByStatus
 );
+router.patch("/updateQuotation/:id", checkToken, controllerUpdateQuotation);
 
 export default router;
