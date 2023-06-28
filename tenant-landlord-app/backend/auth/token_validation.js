@@ -1,11 +1,10 @@
-import { verify } from "jsonwebtoken";
-
+import jwt from "jsonwebtoken";
 export const checkToken = (req, res, next) => {
   let token = req.get("authorization");
 
   if (token) {
     token = token.slice(7);
-    verify(token, "qwe1234", (error, decoded) => {
+    jwt.verify(token, "qwe1234", (error, decoded) => {
       if (error) {
         res.json({
           success: 0,

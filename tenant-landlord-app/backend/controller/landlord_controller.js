@@ -1,6 +1,9 @@
 import {
   createLandlord,
   getLandlordByEmail,
+  getTickets,
+  getTicketById,
+  getTicketsByStatus,
 } from "../models/landlord_model.js";
 import { genSaltSync, hashSync, compareSync } from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -53,6 +56,61 @@ export const controllerLoginLandlord = (req, res) => {
       res.json({
         success: 0,
         data: "Invalid email or password",
+      });
+    }
+  });
+};
+export const controllerGetTickets = (req, res) => {
+  getTickets((err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    } else {
+      return res.json({
+        success: "1",
+        data: results,
+      });
+    }
+  });
+};
+export const controllerGetTicketById = (req, res) => {
+  const id = req.params.id;
+  getTicketById(id, (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    if (!results) {
+      return res.json({
+        success: 0,
+        message: "Record not found",
+      });
+    } else {
+      return res.json({
+        success: "1",
+        data: results,
+      });
+    }
+  });
+};
+
+export const controllerGetTicketsByStatus = (req, res) => {
+  const status = req.params.status;
+  console.log(status);
+  getTicketsByStatus(status, (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    if (!results) {
+      return res.json({
+        success: 0,
+        message: "Record not found",
+      });
+    } else {
+      return res.json({
+        success: "1",
+        data: results,
       });
     }
   });
