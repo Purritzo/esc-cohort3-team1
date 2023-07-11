@@ -33,7 +33,7 @@
 
 
 /* styling for input boxes */
-.input {
+.Input {
     border: none;
     background-color: rgb(229, 226, 226);
     height: 3em;
@@ -56,6 +56,8 @@
     border-radius: 0.25em;
     cursor: pointer;
     color: white;
+    outline: 0;
+    box-shadow: none;
 }
 
 
