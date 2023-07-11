@@ -55,7 +55,9 @@ export const getTicketsByStatus = (email, status, callBack) => {
 };
 
 export const createTicket = (data, callBack) => {
-  const status = "submitted"
+  const status = "submitted";
+  const feedback_rating = null;
+  const feedback_text = null;
   pool.query(
     `
     INSERT INTO service_request
@@ -69,8 +71,8 @@ export const createTicket = (data, callBack) => {
       data.request_description,
       data.submitted_date_time,
       status,
-      feedback_rating,
-      feedback_text
+      data.feedback_rating,
+      data.feedback_text
     ],
     (error, results, fields) => {
       if (error) {
@@ -143,3 +145,24 @@ export const addFeedbackText = (id, data, callBack) => {
     }
   )
 };
+
+export const closeTicketStatus = (id, data, callBack) => {
+  pool.query (
+    `
+    UPDATE service_request
+    SET status = ?
+    WHERE service_request_id = ?
+    `,
+    [
+      data, id
+    ],
+    (error, results, fields) => {
+      if (error) {
+        callBack(error);
+      } else {
+        callBack(null,results);
+      }
+    }
+    
+  )
+}
