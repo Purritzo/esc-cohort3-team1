@@ -31,7 +31,7 @@ const LandlordSignup = () => {
         console.log(response);
         signIn({
             token: response.data.token,
-            expiresIn: 60,
+            expiresIn: 3600,
             tokenType: "Bearer",
             authState: {email: values.email}
         });
