@@ -5,8 +5,7 @@ import {
   controllerCreateTicket,
   controllerQuotationApproval,
   controllerAddFeedbackRating,
-  controllerAddFeedbackText,
-  controllerCloseTicketStatus
+  controllerAddFeedbackText
 } from "../controller/tenant_controller.js";
 import express from "express";
 import { checkToken } from "../auth/token_validation.js";
@@ -29,5 +28,4 @@ router.get("/getTickets",checkToken, controllerGetTickets);
 router.get("/getTicketsByStatus/:status",checkToken, controllerGetTicketsByStatus);
 router.patch("/addFeedbackRating/:id", checkToken, controllerAddFeedbackRating);
 router.patch("/addFeedbackText/:id", checkToken, controllerAddFeedbackText);
-router.patch("/closeTicketStatus/:id", checkToken, controllerCloseTicketStatus);
 export default router;

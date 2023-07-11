@@ -5,8 +5,7 @@ import {
   createTicket,
   quotationApproval,
   addFeedbackRating,
-  addFeedbackText,
-  closeTicketStatus
+  addFeedbackText
 } from "../models/tenant_model.js";
 import { compareSync } from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -154,6 +153,8 @@ export const controllerAddFeedbackRating = (req, res) => {
  export const controllerAddFeedbackText = (req, res) => {
   const id = req.params.id;
   const  body = req.body; // "feedback_test"
+  console.log(body)
+  //const feedback_text = "testing";
   addFeedbackText (id, body, (err, results) => {
     if (err) {
       console.log(err);
@@ -169,30 +170,3 @@ export const controllerAddFeedbackRating = (req, res) => {
     })
   })
 }
-
-export const controllerCloseTicketStatus = (req, res) => {
-  const id = req.params.id;
-  const body = req.body;
-  let status;
-  if (body.status == "close") {
-     status = "ticket_close"
-   } else {
-    status = "close_attempt_failed"
-   }
-  
-  closeTicketStatus (id, status, (err,results) => {
-    if (err) {
-      console.log(err);
-      return;
-    } if (!results) {
-      return res.json ({
-        success : 0,
-        message: "Failed to update user"
-      })
-    } return res.status(200).json({
-      success: 1,
-      data: "updated sucessfully"
-    })
-  })
-}
-
