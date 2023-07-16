@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 
 import { createPool } from "mysql2"; //this is just to import a method
 dotenv.config();
+
 const pool = createPool({
   port: process.env.DB_PORT,
   host: process.env.DB_HOST,
@@ -31,7 +32,11 @@ pool.getConnection((err, connection) => {
   }
 });
 
-export default pool; //this allow us to reuse the connect by keeping the connection in the pool
+function cleanup() {
+  pool.end();
+}
+
+export { pool, cleanup }; //this allow us to reuse the connect by keeping the connection in the pool
 /**
  * Functions of pool:
  * pool.query
