@@ -15,12 +15,9 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
-
 app.use(express.json());
 app.set("view engine", "ejs");
-app.use(express.urlencoded({extended:false}));
-
-
+app.use(express.urlencoded({ extended: false }));
 
 app.listen(process.env.APP_PORT, () => {
   console.log(`Server is working on PORT: `, process.env.APP_PORT);
@@ -36,3 +33,4 @@ app.get("/api", (req, res) => {
 app.use("/api/landlord", landlordRouter);
 app.use("/api/tenant", tenantRouter);
 
+export default app;
