@@ -1,5 +1,14 @@
 import {cleanup, pool} from '../../config/database.js';
-import { addFeedbackRating, getTenantByEmail, getTicketsByTenant, getTicketsByStatus, createTicket } from '../../models/tenant_model.js';
+import { 
+    addFeedbackRating, 
+    getTenantByEmail, 
+    getTicketsByTenant, 
+    getTicketsByStatus, 
+    createTicket,
+    quotationApproval,
+    closeTicketStatus
+} from '../../models/tenant_model.js';
+
 
 
 async function setup() {
@@ -106,15 +115,15 @@ describe ("Testing getTicketsByTenant() in tenant model", () => {
 
 describe ("Testing getTicketsByStatus() in tenant model", () => {
     test ("Test calling getTicketsByTenant() on a valid email & valid status", (done) => {
-        console.log('huh')
+        // console.log('huh')
         getTicketsByStatus('sam@gmail.com', 'tenant_ticket_created', (err, results) => {
             if(err){
                 console.log("ERROR",err)
             }
-            console.log(results)
+            // console.log(results)
             const rowsLength = results.length
             expect(rowsLength).toBe(1);
-            console.log('good?')
+            // console.log('good?')
             done()
         })
     })
@@ -126,7 +135,7 @@ describe ("Testing getTicketsByStatus() in tenant model", () => {
             }
             const rowsLength = results.length
             expect(rowsLength).toBe(0);
-            console.log('good2?')
+            // console.log('good2?')
             done()
         })
     })
@@ -138,7 +147,7 @@ describe ("Testing getTicketsByStatus() in tenant model", () => {
             }
             const rowsLength = results.length
             expect(rowsLength).toBe(0);
-            console.log('good3?')
+            // console.log('good3?')
             done()
         })
     })
@@ -231,6 +240,60 @@ describe("Testing addFeedbackRating() in tenant model", () => {
         // INVALID ID SUPERSEDES INVALID VALUE!
         // YOU WILL GET LENGTH 0
         addFeedbackRating(99, 6, (err, results) => {
+            if (err){
+                console.log("ERROR",err)
+            }
+            //console.log(JSON.parse(JSON.stringify(results)))
+            const rowsChanged = JSON.parse(JSON.stringify(results)).changedRows
+            //console.log(rowsChanged)
+            expect(rowsChanged).toBe(0);
+            done();
+        })
+    });
+
+})
+
+describe("Testing closeTicketStatus() in tenant model", () => {
+    test ("Test calling closeTicketStatus() on a valid service ticket ID & valid value",(done) => {
+        closeTicketStatus(1, 'landlord_ticket_closed', (err, results) => {
+            if (err){
+                console.log("ERROR",err)
+            }
+            //console.log(JSON.parse(JSON.stringify(results)))
+            const rowsChanged = JSON.parse(JSON.stringify(results)).changedRows
+            expect(rowsChanged).toBe(1);
+            done();
+        })
+    });
+    test ("Test calling closeTicketStatus() on an invalid service ticket ID & valid value",(done) => {
+        closeTicketStatus(10, 'landlord_ticket_closed', (err, results) => {
+            if (err){
+                console.log("ERROR",err)
+            }
+            //console.log(JSON.parse(JSON.stringify(results)))
+            const rowsChanged = JSON.parse(JSON.stringify(results)).changedRows
+            //console.log(rowsChanged)
+            expect(rowsChanged).toBe(0);
+            done();
+        })
+    });
+
+})
+
+describe("Testing quotationApproval() in tenant model", () => {
+    test ("Test calling quotationApproval() on a valid service ticket ID & valid value",(done) => {
+        quotationApproval(1, 'ticket_quotation_approved', (err, results) => {
+            if (err){
+                console.log("ERROR",err)
+            }
+            // console.log(JSON.parse(JSON.stringify(results)))
+            const rowsChanged = JSON.parse(JSON.stringify(results)).changedRows
+            expect(rowsChanged).toBe(1);
+            done();
+        })
+    });
+    test ("Test calling quotationApproval() on an invalid service ticket ID & valid value",(done) => {
+        quotationApproval(10, 'ticket_quotation_rejected', (err, results) => {
             if (err){
                 console.log("ERROR",err)
             }
