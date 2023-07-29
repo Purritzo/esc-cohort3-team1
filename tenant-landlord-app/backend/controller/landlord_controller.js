@@ -783,6 +783,11 @@ export const controllerGetLeaseByLandlord = (req,res) => {
   })
 }
 
+/**
+ * 
+ * @param {*} req public_lease_id
+ * @param {*} res 
+ */
 export const controllerDeleteLease = (req,res) => {
   deleteLease(req.body.public_lease_id, (err,results) => {
     if (err) {
@@ -799,6 +804,11 @@ export const controllerDeleteLease = (req,res) => {
   })
 }
 
+/**
+ * 
+ * @param {*} req {landlord_email, tenant_email, old_public_lease, new_public_lease, floor, unit_number, pdf_path}
+ * @param {*} res 
+ */
 export const controllerUpdateLease = (req, res) => {
   let landlordID = "";
   let tenantID = "";
