@@ -88,6 +88,24 @@ export const getTicketsByTenant = (email, callBack) => {
   );
 };
 
+// Temp Fix
+export const getTicketById = (id, callBack) => {
+  pool.query(
+    `
+    SELECT * FROM SERVICE_REQUEST
+    WHERE service_request_id = ?
+    `,
+    [id],
+    (error, results, fields) => {
+      if (error) {
+        callBack(error);
+      } else {
+        callBack(null, results[0]);
+      }
+    }
+  );
+};
+
 /**
  * Get Tickets by Status
  * @param {*} email 
@@ -333,16 +351,16 @@ export const getLeaseByTenant = (id, callBack) => {
   )
 }
 
-export const updateTenantLease = (email, lease, callBack) => {
+export const updateTenantLease = (publicLeaseID, tenantID, callBack) => {
   pool.query(
     `
     UPDATE tenant_user
     SET public_lease_id = ?
-    WHERE email = ?
+    WHERE tenant_user_id = ?
     `,
     [
-      lease,
-      email
+      publicLeaseID,
+      tenantID
     ],
     (error, results, fields) => {
       if (error) {
